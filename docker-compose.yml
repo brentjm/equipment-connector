@@ -4,7 +4,7 @@ services:
   node-red:
     build: ./node-red
     image: node-red-custom
-    container_name: node-red_automation
+    container_name: node-red
     ports:
       - "1880:1880"
     restart: always
