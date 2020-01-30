@@ -16,5 +16,7 @@ RUN mkdir "${HOME}/.npm-packages"\
 COPY package.json /home/node/.node-red/
 WORKDIR /home/node/.node-red
 RUN npm install
+COPY settings.js /home/node/.node-red/
+COPY flows.json /home/node/.node-red/
 
 CMD ["/home/node/.npm-packages/bin/node-red"]
