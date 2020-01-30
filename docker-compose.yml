@@ -1,0 +1,13 @@
+version: '3.5'
+services:
+
+  node-red:
+    build: ./node-red
+    image: node-red-custom
+    container_name: node-red_automation
+    ports:
+      - "1880:1880"
+    restart: always
+    devices:
+      - "/dev/ttyACM0:/dev/ttyACM0"
+
