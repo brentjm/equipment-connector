@@ -13,6 +13,8 @@ services:
       - equipment      
     ports:
       - "1880:1880"
+    devices:
+      - "/dev/ttyACM0:/dev/ttyACM0"
     depends_on:
       - aws
     restart: unless-stopped
