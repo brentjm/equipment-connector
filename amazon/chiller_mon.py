@@ -4,6 +4,7 @@ import time
 import json
 import random
 import argparse
+import socket
 
 # Configure logging
 logger = logging.getLogger("AWSIoTPythonSDK.core")
@@ -36,6 +37,8 @@ CERT_PATH = "{}.cert.pem".format(CLIENT_ID)
 HOST = args.host
 PORT = 8883
 TOPIC = "Chillers/{}/status".format(CLIENT_ID)
+HOST = "node-red"
+PORT = 50007
 
 # Init AWSIoTMQTTClient
 myAWSIoTMQTTClient = AWSIoTMQTTClient(CLIENT_ID)
@@ -51,25 +54,22 @@ myAWSIoTMQTTClient.configureMQTTOperationTimeout(5)  # 5 sec
 
 # Connect and subscribe to AWS IoT
 myAWSIoTMQTTClient.connect()
-time.sleep(2)
 
-def get_chiller_status():
-    # This is where we will add logic to check the chiller interface for status.
-    # for now, its a random number to return healthy or unhealthy
-    number = random.randint(1, 10)
-    if (number % 2) == 0:
-        return "HEALTHY"
-    else:
-        return "UNHEALTHY"
+# Socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind((HOST, PORT))
+s.listen(1)
+conn, addr = s.accept()
+print("Connected by: {}".format(addr))
+
+time.sleep(2)
 
 # Publish to the same topic in a loop forever
 while True:
     message = {}
-    message['message'] = get_chiller_status()
+    message['message'] =  conn.recv(1024)
     message['device_name'] = CLIENT_ID
     message_json = json.dumps(message)
     myAWSIoTMQTTClient.publish(TOPIC, message_json, 1)
     print('Published topic %s: %s\n' % (TOPIC, message_json))
-    time.sleep(10)
-
-
+    #time.sleep(10)
