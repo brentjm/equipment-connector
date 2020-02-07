@@ -37,7 +37,7 @@ CERT_PATH = "{}.cert.pem".format(CLIENT_ID)
 HOST = args.host
 PORT = 8883
 TOPIC = "Chillers/{}/status".format(CLIENT_ID)
-HOST = "node-red"
+HOST = ""
 PORT = 50007
 
 # Init AWSIoTMQTTClient
