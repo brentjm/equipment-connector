@@ -19,7 +19,7 @@ services:
       - aws
     restart: unless-stopped
 
-  amazon:
+  aws:
     build: ./amazon
     image: aws
     container_name: aws
