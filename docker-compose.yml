@@ -1,0 +1,38 @@
+version: '3.5'
+services:
+
+  node-red:
+    build: ./node-red
+    image: node-red-equipment
+    container_name: node-red-equipment
+    volumes:
+      - type: volume
+        source: node-red-data
+        target: /data
+    networks:
+      - equipment      
+    ports:
+      - "1880:1880"
+    depends_on:
+      - aws
+    restart: unless-stopped
+
+  amazon:
+    build: ./amazon
+    image: aws
+    container_name: aws
+    networks:
+      - equipment
+    ports:
+      - "5007:5007"
+    restart: unless-stopped
+
+volumes:
+  node-red-data:
+
+networks:
+  equipment:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.0.1/27
