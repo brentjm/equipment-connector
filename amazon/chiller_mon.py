@@ -5,6 +5,8 @@ import json
 import random
 import argparse
 import socket
+from pdb import set_trace
+
 
 # Configure logging
 logger = logging.getLogger("AWSIoTPythonSDK.core")
@@ -23,22 +25,35 @@ def customCallback(client, userdata, message):
     print(message.topic)
     print("--------------\n\n")
 
-parser = argparse.ArgumentParser()
-parser.add_argument("device_name")
-parser.add_argument("host", help="The AWS IoT Endpoint")
-args = parser.parse_args()
-device = args.device_name
+#  Device and enpoint in information file instead
+#parser = argparse.ArgumentParser()
+#parser.add_argument("device_name")
+#parser.add_argument("host", help="The AWS IoT Endpoint")
+#args = parser.parse_args()
+#device = args.device_name
+
+with open("connection_info.json") as fObj:
+    info = json.loads(fObj.read())
+CLIENT_ID = info["device_name"]
+HOST = info["endpoint"]
 
 # Constants
-CLIENT_ID = args.device_name
+#CLIENT_ID = args.device_name
 ROOT_CA_PATH = "../root-CA.crt"
 PRIVATE_KEY_PATH = "{}.private.key".format(CLIENT_ID)
 CERT_PATH = "{}.cert.pem".format(CLIENT_ID)
-HOST = args.host
+#HOST = args.host
 PORT = 8883
 TOPIC = "Chillers/{}/status".format(CLIENT_ID)
-HOST = ""
-PORT = 50007
+IP = ""
+PORT = 5007
+
+# Socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind((IP, PORT))
+s.listen(1)
+conn, addr = s.accept()
+print("Connected by: {}".format(addr))
 
 # Init AWSIoTMQTTClient
 myAWSIoTMQTTClient = AWSIoTMQTTClient(CLIENT_ID)
@@ -55,15 +70,6 @@ myAWSIoTMQTTClient.configureMQTTOperationTimeout(5)  # 5 sec
 # Connect and subscribe to AWS IoT
 myAWSIoTMQTTClient.connect()
 
-# Socket
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind((HOST, PORT))
-s.listen(1)
-conn, addr = s.accept()
-print("Connected by: {}".format(addr))
-
-time.sleep(2)
-
 # Publish to the same topic in a loop forever
 while True:
     message = {}
@@ -72,4 +78,4 @@ while True:
     message_json = json.dumps(message)
     myAWSIoTMQTTClient.publish(TOPIC, message_json, 1)
     print('Published topic %s: %s\n' % (TOPIC, message_json))
-    #time.sleep(10)
+    time.sleep(10)

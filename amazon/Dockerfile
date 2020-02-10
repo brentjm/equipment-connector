@@ -15,6 +15,8 @@ RUN cd /home/aws/aws-iot-device-sdk-python\
 
 USER aws
 COPY root-CA.crt /home/aws/ 
-COPY test.sh connected-chiller-01.cert.pem connected-chiller-01.private.key connected-chiller-01.public.key device_registration.py setup_helper.py chiller_mon.py /home/aws/python/
+COPY test.sh chiller01.cert.pem chiller01.private.key chiller01.public.key connected-chiller-01.cert.pem connected-chiller-01.private.key connected-chiller-01.public.key connection_info.json device_registration.py setup_helper.py chiller_mon.py /home/aws/python/
 
-CMD ["/bin/bash", "-c", "sleep 10000"]
+WORKDIR /home/aws/python
+#CMD ["/bin/bash", "-c", "sleep 10000"]
+CMD ["python", "chiller_mon.py"] 
