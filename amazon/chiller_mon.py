@@ -39,7 +39,7 @@ HOST = info["endpoint"]
 
 # Constants
 #CLIENT_ID = args.device_name
-ROOT_CA_PATH = "../root-CA.crt"
+ROOT_CA_PATH = "root-CA.crt"
 PRIVATE_KEY_PATH = "{}.private.key".format(CLIENT_ID)
 CERT_PATH = "{}.cert.pem".format(CLIENT_ID)
 #HOST = args.host
