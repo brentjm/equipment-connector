@@ -1,22 +1,16 @@
-FROM arm32v7/node:buster
+FROM nodered/node-red:1.0.1-10-minimal-arm32v6
 
-COPY group /etc/group
+USER root
+RUN apk add --no-cache make gcc g++ python linux-headers udev
 
-USER node
+WORKDIR /data
+COPY flows.json settings.js /data/
+RUN chown node-red:node-red flows.json settings.js
 
-RUN mkdir "${HOME}/.npm-packages"\
-    && cd "${HOME}/.npm-packages"\
-    && npm config set prefix "${HOME}/.npm-packages"\
-    && echo "NPM_PACKAGES=${HOME}/.npm-packages" >> "${HOME}/.bashrc"\
-    && echo "export PATH=$PATH:${HOME}/.npm-packages/bin" >> "${HOME}/.bashrc"\
-    && /bin/bash -c "source ${HOME}/.bashrc"\
-    && mkdir "${HOME}/.node-red"\
-    && npm install -g node-red
-
-COPY package.json /home/node/.node-red/
-WORKDIR /home/node/.node-red
+WORKDIR /usr/src/node-red
+COPY package.json /usr/src/node-red/
+RUN chown node-red:node-red /usr/src/node-red/package.json 
+USER node-red
 RUN npm install
-COPY settings.js /home/node/.node-red/
-COPY flows.json /home/node/.node-red/
 
-CMD ["/home/node/.npm-packages/bin/node-red"]
+#CMD ["/bin/bash", "-c", "sleep 1000"]
