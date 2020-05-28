@@ -13,20 +13,8 @@ services:
       - equipment      
     ports:
       - "1880:1880"
-    devices:
-      - "/dev/ttyACM0:/dev/ttyACM0"
-    depends_on:
-      - aws
-    restart: unless-stopped
-
-  aws:
-    build: ./amazon
-    image: aws
-    container_name: aws
-    networks:
-      - equipment
-    ports:
-      - "5007:5007"
+#    devices:
+#      - "/dev/ttyUSB0:/dev/ttyUSB0"
     restart: unless-stopped
 
 volumes:

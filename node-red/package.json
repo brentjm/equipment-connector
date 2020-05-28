@@ -14,23 +14,16 @@
     },
     "contributors": [
         {
-            "name": "Dave Conway-Jones"
-        },
-        {
-            "name": "Nick O'Leary"
-        },
-        {
-            "name": "James Thomas"
-        },
-        {
-            "name": "Raymond Mouthaan"
+            "name": "Brent Maranzano"
         }
     ],
     "dependencies": {
+        "bufferutil": "^4.0.1",
         "node-red": "1.0.1",
+        "node-red-dashboard": "~2.22.1",
+        "node-red-node-serialport": "~0.10.0",
         "serialport": "^8.0.6",
-        "node-red-dashboard": "~2.19.3",
-        "node-red-node-serialport": "~0.10.0"
+        "utf-8-validate": "^5.0.2"
     },
     "engines": {
         "node": ">=10"
