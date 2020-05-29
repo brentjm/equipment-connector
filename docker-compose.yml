@@ -13,8 +13,8 @@ services:
       - equipment      
     ports:
       - "1880:1880"
-#    devices:
-#      - "/dev/ttyUSB0:/dev/ttyUSB0"
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
     restart: unless-stopped
 
 volumes:
