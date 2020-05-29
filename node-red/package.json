@@ -18,6 +18,7 @@
         }
     ],
     "dependencies": {
+        "node-red": "1.0.3",
         "bufferutil": "^4.0.1",
         "node-red": "1.0.1",
         "node-red-dashboard": "~2.22.1",
